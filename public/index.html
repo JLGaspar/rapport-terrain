@@ -351,6 +351,7 @@
 <script>
   let selectedRole = '';
   let selectedFiles = [];
+  let comments = []; // sauvegarde des commentaires entre chaque re-render
  
   function selectRole(role) {
     selectedRole = role;
@@ -365,10 +366,19 @@
     document.getElementById('btn-step1').disabled = !(selectedRole && nom && chantier);
   }
  
+  function saveComments() {
+    selectedFiles.forEach((_, i) => {
+      const ta = document.getElementById('comment-' + i);
+      if (ta) comments[i] = ta.value;
+    });
+  }
+ 
   function handleFiles(files) {
+    saveComments();
     for (const file of files) {
       if (!selectedFiles.find(f => f.name === file.name && f.size === file.size)) {
         selectedFiles.push(file);
+        comments.push('');
       }
     }
     renderPhotos();
@@ -397,7 +407,7 @@
       commentDiv.className = 'comment-field';
       commentDiv.innerHTML = `
         <div class="comment-label">Photo ${i + 1} — ${file.name} <span style="color:#ff3b30">*</span></div>
-        <textarea id="comment-${i}" placeholder="Commentaire obligatoire" oninput="checkComments()"></textarea>
+        <textarea id="comment-${i}" placeholder="Commentaire obligatoire" oninput="onCommentInput(${i}, this.value)">${comments[i] || ''}</textarea>
       `;
       commentsContainer.appendChild(commentDiv);
     });
@@ -411,25 +421,32 @@
       commentsCard.style.display = 'none';
     }
  
-    document.getElementById('btn-step2').disabled = selectedFiles.length === 0;
+    checkComments();
+  }
+ 
+  function onCommentInput(index, value) {
+    comments[index] = value;
     checkComments();
   }
  
   function checkComments() {
-    if (selectedFiles.length === 0) return;
-    const allFilled = selectedFiles.every((_, i) => {
-      const ta = document.getElementById('comment-' + i);
-      return ta && ta.value.trim().length > 0;
-    });
+    if (selectedFiles.length === 0) {
+      document.getElementById('btn-step2').disabled = true;
+      return;
+    }
+    const allFilled = selectedFiles.every((_, i) => (comments[i] || '').trim().length > 0);
     document.getElementById('btn-step2').disabled = !allFilled;
   }
  
   function removePhoto(index) {
+    saveComments();
     selectedFiles.splice(index, 1);
+    comments.splice(index, 1);
     renderPhotos();
   }
  
   function goToStep(step) {
+    if (step === 3) saveComments();
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + step).classList.add('active');
  
@@ -464,8 +481,7 @@
  
     selectedFiles.forEach((file, i) => {
       formData.append('photos', file, file.name);
-      const comment = document.getElementById('comment-' + i);
-      formData.append('commentaires', comment ? comment.value : '');
+      formData.append('commentaires', comments[i] || '');
     });
  
     try {
@@ -487,6 +503,7 @@
   function recommencer() {
     selectedRole = '';
     selectedFiles = [];
+    comments = [];
     document.getElementById('nom').value = '';
     document.getElementById('chantier').value = '';
     document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
@@ -498,4 +515,3 @@
 </body>
 </html>
  
-
