@@ -11,7 +11,7 @@
       background: #f2f2f7;
       min-height: 100vh;
     }
-
+ 
     .header {
       background: #000;
       color: #fff;
@@ -20,7 +20,7 @@
     }
     .header h1 { font-size: 18px; font-weight: 700; }
     .header p { font-size: 12px; color: #aaa; margin-top: 2px; }
-
+ 
     .progress-bar {
       display: flex;
       background: #fff;
@@ -37,10 +37,10 @@
     }
     .progress-step.active { color: #000; border-bottom-color: #000; font-weight: 600; }
     .progress-step.done { color: #34c759; border-bottom-color: #34c759; }
-
+ 
     .screen { display: none; padding: 20px; }
     .screen.active { display: block; }
-
+ 
     .card {
       background: #fff;
       border-radius: 12px;
@@ -56,7 +56,7 @@
       letter-spacing: 0.5px;
       margin-bottom: 12px;
     }
-
+ 
     label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
     .required { color: #ff3b30; }
     input[type="text"] {
@@ -69,7 +69,7 @@
       transition: border-color 0.2s;
     }
     input[type="text"]:focus { border-color: #000; }
-
+ 
     .roles-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -88,7 +88,7 @@
     }
     .role-btn .emoji { font-size: 24px; display: block; margin-bottom: 4px; }
     .role-btn.selected { border-color: #000; background: #000; color: #fff; }
-
+ 
     .photo-area {
       border: 2px dashed #ddd;
       border-radius: 12px;
@@ -110,7 +110,7 @@
     .photo-area .icon { font-size: 36px; margin-bottom: 8px; }
     .photo-area p { font-size: 14px; color: #666; }
     .photo-area small { color: #aaa; font-size: 12px; }
-
+ 
     .photos-preview {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -145,7 +145,7 @@
       align-items: center;
       justify-content: center;
     }
-
+ 
     .comment-field {
       margin-top: 8px;
     }
@@ -162,14 +162,14 @@
     }
     .comment-field textarea:focus { border-color: #000; }
     .comment-label { font-size: 12px; color: #666; margin-bottom: 4px; }
-
+ 
     .photo-count {
       font-size: 13px;
       color: #666;
       margin-top: 8px;
       text-align: center;
     }
-
+ 
     .recap-row {
       display: flex;
       justify-content: space-between;
@@ -181,7 +181,7 @@
     .recap-row:last-child { border-bottom: none; }
     .recap-label { color: #666; flex-shrink: 0; margin-right: 12px; }
     .recap-value { font-weight: 500; text-align: right; }
-
+ 
     .btn {
       width: 100%;
       padding: 16px;
@@ -202,7 +202,7 @@
       margin-top: 10px;
     }
     .btn-secondary:hover { border-color: #000; }
-
+ 
     .success-screen {
       text-align: center;
       padding: 40px 20px;
@@ -210,7 +210,7 @@
     .success-icon { font-size: 64px; margin-bottom: 16px; }
     .success-screen h2 { font-size: 22px; margin-bottom: 8px; }
     .success-screen p { color: #666; font-size: 15px; margin-bottom: 24px; }
-
+ 
     .spinner {
       display: inline-block;
       width: 20px;
@@ -223,7 +223,7 @@
       vertical-align: middle;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
+ 
     .error-msg {
       background: #fff0f0;
       border: 1px solid #ffcdd2;
@@ -237,18 +237,18 @@
   </style>
 </head>
 <body>
-
+ 
 <div class="header">
   <h1>📋 Rapport Terrain</h1>
   <p>Envoi automatique aux assistantes</p>
 </div>
-
+ 
 <div class="progress-bar">
   <div class="progress-step active" id="step-label-1">Identité</div>
   <div class="progress-step" id="step-label-2">Photos</div>
   <div class="progress-step" id="step-label-3">Récap</div>
 </div>
-
+ 
 <!-- ÉCRAN 1 : Identité -->
 <div class="screen active" id="screen-1">
   <div class="card">
@@ -268,47 +268,47 @@
       </button>
     </div>
   </div>
-
+ 
   <div class="card">
     <div class="card-title">Vos informations</div>
     <label>Prénom et nom <span class="required">*</span></label>
     <input type="text" id="nom" placeholder="Ex: Jean Dupont" oninput="checkStep1()" />
     <div style="height:14px"></div>
-    <label>Chantier / Client <span class="required">*</span></label>
-    <input type="text" id="chantier" placeholder="Ex: Famille Martin, 12 rue des Lilas" oninput="checkStep1()" />
+    <label>Adresse du chantier <span class="required">*</span></label>
+    <input type="text" id="chantier" placeholder="Ex: 12 rue des Lilas, 75020 Paris" oninput="checkStep1()" />
   </div>
-
+ 
   <button class="btn btn-primary" id="btn-step1" onclick="goToStep(2)" disabled>
     Continuer →
   </button>
 </div>
-
+ 
 <!-- ÉCRAN 2 : Photos -->
 <div class="screen" id="screen-2">
   <div class="card">
     <div class="card-title">Ajouter des photos <span class="required">*</span></div>
-    <div class="photo-area" onclick="document.getElementById('file-input').click()">
-      <input type="file" id="file-input" accept="image/*" multiple capture="environment" onchange="handleFiles(this.files)" style="display:none" />
-      <div class="icon">📷</div>
-      <p>Prendre une photo ou choisir depuis la galerie</p>
-      <small>Plusieurs photos possibles</small>
+    <input type="file" id="file-camera" accept="image/*" capture="environment" multiple onchange="handleFiles(this.files)" style="display:none" />
+    <input type="file" id="file-gallery" accept="image/*" multiple onchange="handleFiles(this.files)" style="display:none" />
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <button class="btn btn-secondary" style="margin-top:0;padding:14px 8px;font-size:14px" onclick="document.getElementById('file-camera').click()">📷 Appareil photo</button>
+      <button class="btn btn-secondary" style="margin-top:0;padding:14px 8px;font-size:14px" onclick="document.getElementById('file-gallery').click()">🖼️ Photothèque</button>
     </div>
-
+ 
     <div class="photos-preview" id="photos-preview"></div>
     <div class="photo-count" id="photo-count" style="display:none"></div>
   </div>
-
+ 
   <div class="card" id="comments-card" style="display:none">
-    <div class="card-title">Commentaires (optionnel)</div>
+    <div class="card-title">Commentaires <span class="required">*</span></div>
     <div id="comments-container"></div>
   </div>
-
+ 
   <button class="btn btn-primary" id="btn-step2" onclick="goToStep(3)" disabled>
     Voir le récapitulatif →
   </button>
   <button class="btn btn-secondary" onclick="goToStep(1)">← Retour</button>
 </div>
-
+ 
 <!-- ÉCRAN 3 : Récapitulatif -->
 <div class="screen" id="screen-3">
   <div class="card">
@@ -330,14 +330,14 @@
       <span class="recap-value" id="recap-photos">—</span>
     </div>
   </div>
-
+ 
   <button class="btn btn-primary" id="btn-envoyer" onclick="envoyer()">
     ✉️ Envoyer le rapport
   </button>
   <div class="error-msg" id="error-msg"></div>
   <button class="btn btn-secondary" onclick="goToStep(2)">← Retour</button>
 </div>
-
+ 
 <!-- ÉCRAN 4 : Succès -->
 <div class="screen" id="screen-4">
   <div class="success-screen">
@@ -347,24 +347,24 @@
     <button class="btn btn-primary" onclick="recommencer()">Nouveau rapport</button>
   </div>
 </div>
-
+ 
 <script>
   let selectedRole = '';
   let selectedFiles = [];
-
+ 
   function selectRole(role) {
     selectedRole = role;
     document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('role-' + role).classList.add('selected');
     checkStep1();
   }
-
+ 
   function checkStep1() {
     const nom = document.getElementById('nom').value.trim();
     const chantier = document.getElementById('chantier').value.trim();
     document.getElementById('btn-step1').disabled = !(selectedRole && nom && chantier);
   }
-
+ 
   function handleFiles(files) {
     for (const file of files) {
       if (!selectedFiles.find(f => f.name === file.name && f.size === file.size)) {
@@ -373,16 +373,16 @@
     }
     renderPhotos();
   }
-
+ 
   function renderPhotos() {
     const preview = document.getElementById('photos-preview');
     const commentsCard = document.getElementById('comments-card');
     const commentsContainer = document.getElementById('comments-container');
     const count = document.getElementById('photo-count');
-
+ 
     preview.innerHTML = '';
     commentsContainer.innerHTML = '';
-
+ 
     selectedFiles.forEach((file, i) => {
       const url = URL.createObjectURL(file);
       const thumb = document.createElement('div');
@@ -392,16 +392,16 @@
         <button class="remove-photo" onclick="removePhoto(${i})">×</button>
       `;
       preview.appendChild(thumb);
-
+ 
       const commentDiv = document.createElement('div');
       commentDiv.className = 'comment-field';
       commentDiv.innerHTML = `
-        <div class="comment-label">Photo ${i + 1} — ${file.name}</div>
-        <textarea id="comment-${i}" placeholder="Commentaire sur cette photo (optionnel)"></textarea>
+        <div class="comment-label">Photo ${i + 1} — ${file.name} <span style="color:#ff3b30">*</span></div>
+        <textarea id="comment-${i}" placeholder="Commentaire obligatoire" oninput="checkComments()"></textarea>
       `;
       commentsContainer.appendChild(commentDiv);
     });
-
+ 
     if (selectedFiles.length > 0) {
       count.style.display = 'block';
       count.textContent = `${selectedFiles.length} photo(s) sélectionnée(s)`;
@@ -410,54 +410,64 @@
       count.style.display = 'none';
       commentsCard.style.display = 'none';
     }
-
+ 
     document.getElementById('btn-step2').disabled = selectedFiles.length === 0;
+    checkComments();
   }
-
+ 
+  function checkComments() {
+    if (selectedFiles.length === 0) return;
+    const allFilled = selectedFiles.every((_, i) => {
+      const ta = document.getElementById('comment-' + i);
+      return ta && ta.value.trim().length > 0;
+    });
+    document.getElementById('btn-step2').disabled = !allFilled;
+  }
+ 
   function removePhoto(index) {
     selectedFiles.splice(index, 1);
     renderPhotos();
   }
-
+ 
   function goToStep(step) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + step).classList.add('active');
-
+ 
     document.querySelectorAll('.progress-step').forEach((el, i) => {
       el.classList.remove('active', 'done');
       if (i + 1 < step) el.classList.add('done');
       if (i + 1 === step) el.classList.add('active');
     });
-
+ 
     if (step === 3) {
       document.getElementById('recap-role').textContent = selectedRole;
       document.getElementById('recap-nom').textContent = document.getElementById('nom').value;
       document.getElementById('recap-chantier').textContent = document.getElementById('chantier').value;
       document.getElementById('recap-photos').textContent = selectedFiles.length + ' photo(s)';
     }
-
+ 
     window.scrollTo(0, 0);
   }
-
+ 
   async function envoyer() {
     const btn = document.getElementById('btn-envoyer');
     const errorMsg = document.getElementById('error-msg');
     errorMsg.style.display = 'none';
-
+ 
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span>Envoi en cours…';
-
+ 
     const formData = new FormData();
     formData.append('role', selectedRole);
     formData.append('nom', document.getElementById('nom').value);
     formData.append('chantier', document.getElementById('chantier').value);
-
+ 
     selectedFiles.forEach((file, i) => {
       formData.append('photos', file, file.name);
       const comment = document.getElementById('comment-' + i);
       formData.append('commentaires', comment ? comment.value : '');
     });
-
+ 
     try {
       const res = await fetch('/envoyer', { method: 'POST', body: formData });
       const data = await res.json();
@@ -473,7 +483,7 @@
       btn.innerHTML = '✉️ Envoyer le rapport';
     }
   }
-
+ 
   function recommencer() {
     selectedRole = '';
     selectedFiles = [];
@@ -487,3 +497,5 @@
 </script>
 </body>
 </html>
+ 
+
