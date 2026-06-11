@@ -89,6 +89,27 @@
     .role-btn .emoji { font-size: 24px; display: block; margin-bottom: 4px; }
     .role-btn.selected { border-color: #000; background: #000; color: #fff; }
  
+    /* Sélecteur type de rapport */
+    .type-rapport-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .type-btn {
+      padding: 16px 10px;
+      border: 2px solid #e5e5e5;
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.15s;
+      line-height: 1.3;
+    }
+    .type-btn .emoji { font-size: 28px; display: block; margin-bottom: 6px; }
+    .type-btn.selected { border-color: #000; background: #000; color: #fff; }
+ 
     .photo-area {
       border: 2px dashed #ddd;
       border-radius: 12px;
@@ -145,6 +166,36 @@
       align-items: center;
       justify-content: center;
     }
+ 
+    /* Badge PV */
+    .pv-badge {
+      display: inline-block;
+      background: #000;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+      letter-spacing: 0.5px;
+    }
+ 
+    /* Vignette PV (PDF) */
+    .pv-file-preview {
+      margin-top: 12px;
+      background: #f2f2f7;
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pv-file-preview .pv-icon { font-size: 28px; }
+    .pv-file-preview .pv-info { flex: 1; min-width: 0; }
+    .pv-file-preview .pv-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pv-file-preview .pv-size { font-size: 11px; color: #999; }
+    .pv-file-preview .pv-remove { background: none; border: none; font-size: 18px; cursor: pointer; color: #999; padding: 4px; }
  
     .comment-field {
       margin-top: 8px;
@@ -234,23 +285,46 @@
       margin-top: 12px;
       display: none;
     }
+ 
+    .info-banner {
+      background: #f0f4ff;
+      border: 1px solid #c7d7f8;
+      color: #1a3a7c;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
  
 <div class="header">
-  <h1>📋 Rapport Terrain</h1>
-  <p>Envoi automatique aux assistantes</p>
+  <h1 id="header-title">📋 Rapport Terrain</h1>
+  <p id="header-sub">Envoi automatique aux assistantes</p>
 </div>
  
 <div class="progress-bar">
   <div class="progress-step active" id="step-label-1">Identité</div>
-  <div class="progress-step" id="step-label-2">Photos</div>
+  <div class="progress-step" id="step-label-2">Fichiers</div>
   <div class="progress-step" id="step-label-3">Récap</div>
 </div>
  
 <!-- ÉCRAN 1 : Identité -->
 <div class="screen active" id="screen-1">
+ 
+  <div class="card">
+    <div class="card-title">Type de rapport <span class="required">*</span></div>
+    <div class="type-rapport-grid">
+      <button class="type-btn" onclick="selectTypeRapport('terrain')" id="type-terrain">
+        <span class="emoji">📋</span>Rapport terrain
+      </button>
+      <button class="type-btn" onclick="selectTypeRapport('reception')" id="type-reception">
+        <span class="emoji">🏁</span>Réception de chantier
+      </button>
+    </div>
+  </div>
+ 
   <div class="card">
     <div class="card-title">Votre rôle</div>
     <div class="roles-grid">
@@ -283,10 +357,26 @@
   </button>
 </div>
  
-<!-- ÉCRAN 2 : Photos -->
+<!-- ÉCRAN 2 : Photos / PV -->
 <div class="screen" id="screen-2">
-  <div class="card">
-    <div class="card-title">Ajouter des photos <span class="required">*</span></div>
+ 
+  <!-- BLOC PV — visible uniquement en mode réception -->
+  <div class="card" id="card-pv" style="display:none">
+    <div class="card-title">PV de réception <span class="required">*</span> <span style="font-size:11px;color:#999;text-transform:none;font-weight:400;">(PDF ou photo)</span></div>
+    <input type="file" id="file-pv" accept="image/*,application/pdf" onchange="handlePV(this.files)" style="display:none" />
+    <input type="file" id="file-pv-camera" accept="image/*" capture="environment" onchange="handlePV(this.files)" style="display:none" />
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px" id="pv-buttons">
+      <button class="btn btn-secondary" style="margin-top:0;padding:12px 6px;font-size:12px" onclick="document.getElementById('file-pv-camera').click()">📷 Photo</button>
+      <button class="btn btn-secondary" style="margin-top:0;padding:12px 6px;font-size:12px" onclick="document.getElementById('file-pv').click()">📄 Fichier</button>
+      <button class="btn btn-secondary" style="margin-top:0;padding:12px 6px;font-size:12px" onclick="document.getElementById('file-pv').click()">🖼️ Galerie</button>
+    </div>
+    <div id="pv-preview" style="display:none"></div>
+    <div class="info-banner" id="pv-info">Le PV sera envoyé en pièce jointe avec le rapport de réception.</div>
+  </div>
+ 
+  <!-- BLOC PHOTOS TERRAIN — visible en mode terrain + photos supplémentaires en mode réception -->
+  <div class="card" id="card-photos">
+    <div class="card-title" id="photos-card-title">Ajouter des photos <span class="required">*</span></div>
     <input type="file" id="file-camera" accept="image/*" capture="environment" multiple onchange="handleFiles(this.files)" style="display:none" />
     <input type="file" id="file-gallery" accept="image/*" multiple onchange="handleFiles(this.files)" style="display:none" />
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -314,6 +404,10 @@
   <div class="card">
     <div class="card-title">Récapitulatif</div>
     <div class="recap-row">
+      <span class="recap-label">Type</span>
+      <span class="recap-value" id="recap-type">—</span>
+    </div>
+    <div class="recap-row">
       <span class="recap-label">Rôle</span>
       <span class="recap-value" id="recap-role">—</span>
     </div>
@@ -325,8 +419,12 @@
       <span class="recap-label">Chantier</span>
       <span class="recap-value" id="recap-chantier">—</span>
     </div>
+    <div class="recap-row" id="recap-row-pv" style="display:none">
+      <span class="recap-label">PV</span>
+      <span class="recap-value" id="recap-pv">—</span>
+    </div>
     <div class="recap-row">
-      <span class="recap-label">Photos</span>
+      <span class="recap-label" id="recap-photos-label">Photos</span>
       <span class="recap-value" id="recap-photos">—</span>
     </div>
   </div>
@@ -342,16 +440,39 @@
 <div class="screen" id="screen-4">
   <div class="success-screen">
     <div class="success-icon">✅</div>
-    <h2>Rapport envoyé !</h2>
-    <p>Les assistantes ont reçu votre rapport avec les photos en pièces jointes.</p>
+    <h2 id="success-title">Rapport envoyé !</h2>
+    <p id="success-msg">Les assistantes ont reçu votre rapport avec les photos en pièces jointes.</p>
     <button class="btn btn-primary" onclick="recommencer()">Nouveau rapport</button>
   </div>
 </div>
  
 <script>
   let selectedRole = '';
+  let selectedTypeRapport = ''; // 'terrain' ou 'reception'
   let selectedFiles = [];
-  let comments = []; // sauvegarde des commentaires entre chaque re-render
+  let comments = [];
+  let pvFile = null; // fichier PV unique pour la réception
+ 
+  // ─── SÉLECTION TYPE DE RAPPORT ────────────────────────────────────────────
+ 
+  function selectTypeRapport(type) {
+    selectedTypeRapport = type;
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('type-' + type).classList.add('selected');
+ 
+    // Adapter l'interface selon le type
+    if (type === 'reception') {
+      document.getElementById('header-title').textContent = '🏁 Réception de chantier';
+      document.getElementById('header-sub').textContent = 'Envoi automatique au responsable';
+    } else {
+      document.getElementById('header-title').textContent = '📋 Rapport Terrain';
+      document.getElementById('header-sub').textContent = 'Envoi automatique aux assistantes';
+    }
+ 
+    checkStep1();
+  }
+ 
+  // ─── SÉLECTION RÔLE ───────────────────────────────────────────────────────
  
   function selectRole(role) {
     selectedRole = role;
@@ -360,11 +481,92 @@
     checkStep1();
   }
  
+  // ─── VALIDATION STEP 1 ────────────────────────────────────────────────────
+ 
   function checkStep1() {
     const nom = document.getElementById('nom').value.trim();
     const chantier = document.getElementById('chantier').value.trim();
-    document.getElementById('btn-step1').disabled = !(selectedRole && nom && chantier);
+    document.getElementById('btn-step1').disabled = !(selectedTypeRapport && selectedRole && nom && chantier);
   }
+ 
+  // ─── STEP 2 : AFFICHAGE SELON LE TYPE ─────────────────────────────────────
+ 
+  function setupStep2() {
+    const isReception = selectedTypeRapport === 'reception';
+ 
+    // Bloc PV : visible uniquement en mode réception
+    document.getElementById('card-pv').style.display = isReception ? 'block' : 'none';
+ 
+    // Titre et caractère obligatoire du bloc photos
+    const photosTitle = document.getElementById('photos-card-title');
+    if (isReception) {
+      photosTitle.innerHTML = 'Photos du chantier terminé <span style="font-size:11px;color:#999;font-weight:400;">(facultatif)</span>';
+    } else {
+      photosTitle.innerHTML = 'Ajouter des photos <span class="required">*</span>';
+    }
+ 
+    checkStep2();
+  }
+ 
+  // ─── GESTION PV ───────────────────────────────────────────────────────────
+ 
+  function handlePV(files) {
+    if (!files || files.length === 0) return;
+    pvFile = files[0];
+    renderPV();
+    checkStep2();
+  }
+ 
+  function renderPV() {
+    const preview = document.getElementById('pv-preview');
+    const buttons = document.getElementById('pv-buttons');
+    const info = document.getElementById('pv-info');
+ 
+    if (pvFile) {
+      const isPDF = pvFile.type === 'application/pdf';
+      const icon = isPDF ? '📄' : '🖼️';
+      const sizeKB = Math.round(pvFile.size / 1024);
+ 
+      if (isPDF) {
+        preview.innerHTML = `
+          <div class="pv-file-preview">
+            <span class="pv-icon">${icon}</span>
+            <div class="pv-info">
+              <div class="pv-name">${pvFile.name}</div>
+              <div class="pv-size">${sizeKB} Ko • PDF</div>
+            </div>
+            <button class="pv-remove" onclick="removePV()">×</button>
+          </div>
+        `;
+      } else {
+        // Image : afficher en miniature
+        const url = URL.createObjectURL(pvFile);
+        preview.innerHTML = `
+          <div style="margin-top:12px;position:relative;display:inline-block;width:100%">
+            <img src="${url}" style="width:100%;max-height:180px;object-fit:cover;border-radius:8px;" />
+            <button onclick="removePV()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
+            <div style="font-size:11px;color:#666;margin-top:4px;text-align:center;">${pvFile.name}</div>
+          </div>
+        `;
+      }
+ 
+      preview.style.display = 'block';
+      buttons.style.display = 'none';
+      info.style.display = 'none';
+    } else {
+      preview.style.display = 'none';
+      buttons.style.display = 'grid';
+      info.style.display = 'block';
+    }
+  }
+ 
+  function removePV() {
+    pvFile = null;
+    renderPV();
+    checkStep2();
+  }
+ 
+  // ─── GESTION PHOTOS ───────────────────────────────────────────────────────
  
   function saveComments() {
     selectedFiles.forEach((_, i) => {
@@ -403,39 +605,51 @@
       `;
       preview.appendChild(thumb);
  
-      const commentDiv = document.createElement('div');
-      commentDiv.className = 'comment-field';
-      commentDiv.innerHTML = `
-        <div class="comment-label">Photo ${i + 1} — ${file.name} <span style="color:#ff3b30">*</span></div>
-        <textarea id="comment-${i}" placeholder="Commentaire obligatoire" oninput="onCommentInput(${i}, this.value)">${comments[i] || ''}</textarea>
-      `;
-      commentsContainer.appendChild(commentDiv);
+      // Commentaires obligatoires uniquement en mode terrain
+      if (selectedTypeRapport !== 'reception') {
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'comment-field';
+        commentDiv.innerHTML = `
+          <div class="comment-label">Photo ${i + 1} — ${file.name} <span style="color:#ff3b30">*</span></div>
+          <textarea id="comment-${i}" placeholder="Commentaire obligatoire" oninput="onCommentInput(${i}, this.value)">${comments[i] || ''}</textarea>
+        `;
+        commentsContainer.appendChild(commentDiv);
+      }
     });
  
     if (selectedFiles.length > 0) {
       count.style.display = 'block';
       count.textContent = `${selectedFiles.length} photo(s) sélectionnée(s)`;
-      commentsCard.style.display = 'block';
+      // Afficher les commentaires uniquement en mode terrain
+      commentsCard.style.display = selectedTypeRapport !== 'reception' ? 'block' : 'none';
     } else {
       count.style.display = 'none';
       commentsCard.style.display = 'none';
     }
  
-    checkComments();
+    checkStep2();
   }
  
   function onCommentInput(index, value) {
     comments[index] = value;
-    checkComments();
+    checkStep2();
   }
  
-  function checkComments() {
-    if (selectedFiles.length === 0) {
-      document.getElementById('btn-step2').disabled = true;
-      return;
+  function checkStep2() {
+    const isReception = selectedTypeRapport === 'reception';
+ 
+    if (isReception) {
+      // En réception : PV obligatoire, photos facultatives
+      document.getElementById('btn-step2').disabled = !pvFile;
+    } else {
+      // En terrain : au moins une photo + tous les commentaires remplis
+      if (selectedFiles.length === 0) {
+        document.getElementById('btn-step2').disabled = true;
+        return;
+      }
+      const allFilled = selectedFiles.every((_, i) => (comments[i] || '').trim().length > 0);
+      document.getElementById('btn-step2').disabled = !allFilled;
     }
-    const allFilled = selectedFiles.every((_, i) => (comments[i] || '').trim().length > 0);
-    document.getElementById('btn-step2').disabled = !allFilled;
   }
  
   function removePhoto(index) {
@@ -445,8 +659,12 @@
     renderPhotos();
   }
  
+  // ─── NAVIGATION ───────────────────────────────────────────────────────────
+ 
   function goToStep(step) {
+    if (step === 2) setupStep2();
     if (step === 3) saveComments();
+ 
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + step).classList.add('active');
  
@@ -457,14 +675,28 @@
     });
  
     if (step === 3) {
+      const isReception = selectedTypeRapport === 'reception';
+      document.getElementById('recap-type').textContent = isReception ? '🏁 Réception de chantier' : '📋 Rapport terrain';
       document.getElementById('recap-role').textContent = selectedRole;
       document.getElementById('recap-nom').textContent = document.getElementById('nom').value;
       document.getElementById('recap-chantier').textContent = document.getElementById('chantier').value;
-      document.getElementById('recap-photos').textContent = selectedFiles.length + ' photo(s)';
+ 
+      if (isReception) {
+        document.getElementById('recap-row-pv').style.display = 'flex';
+        document.getElementById('recap-pv').textContent = pvFile ? pvFile.name : '—';
+        document.getElementById('recap-photos-label').textContent = 'Photos supp.';
+        document.getElementById('recap-photos').textContent = selectedFiles.length > 0 ? selectedFiles.length + ' photo(s)' : 'Aucune';
+      } else {
+        document.getElementById('recap-row-pv').style.display = 'none';
+        document.getElementById('recap-photos-label').textContent = 'Photos';
+        document.getElementById('recap-photos').textContent = selectedFiles.length + ' photo(s)';
+      }
     }
  
     window.scrollTo(0, 0);
   }
+ 
+  // ─── ENVOI ────────────────────────────────────────────────────────────────
  
   async function envoyer() {
     const btn = document.getElementById('btn-envoyer');
@@ -478,16 +710,33 @@
     formData.append('role', selectedRole);
     formData.append('nom', document.getElementById('nom').value);
     formData.append('chantier', document.getElementById('chantier').value);
+    formData.append('typeRapport', selectedTypeRapport);
  
+    // En mode réception : PV en premier (pour que le serveur l'identifie facilement), puis photos
+    if (selectedTypeRapport === 'reception' && pvFile) {
+      formData.append('photos', pvFile, pvFile.name);
+    }
+ 
+    // Photos (terrain : avec commentaires ; réception : sans commentaires)
     selectedFiles.forEach((file, i) => {
       formData.append('photos', file, file.name);
-      formData.append('commentaires', comments[i] || '');
+      if (selectedTypeRapport !== 'reception') {
+        formData.append('commentaires', comments[i] || '');
+      }
     });
  
     try {
       const res = await fetch('/envoyer', { method: 'POST', body: formData });
       const data = await res.json();
       if (data.success) {
+        // Adapter le message de succès
+        if (selectedTypeRapport === 'reception') {
+          document.getElementById('success-title').textContent = 'Réception envoyée !';
+          document.getElementById('success-msg').textContent = 'Le PV et les photos ont été transmis au responsable.';
+        } else {
+          document.getElementById('success-title').textContent = 'Rapport envoyé !';
+          document.getElementById('success-msg').textContent = 'Les assistantes ont reçu votre rapport avec les photos en pièces jointes.';
+        }
         goToStep(4);
       } else {
         throw new Error(data.error || 'Erreur inconnue');
@@ -500,15 +749,22 @@
     }
   }
  
+  // ─── RECOMMENCER ──────────────────────────────────────────────────────────
+ 
   function recommencer() {
     selectedRole = '';
+    selectedTypeRapport = '';
     selectedFiles = [];
     comments = [];
+    pvFile = null;
     document.getElementById('nom').value = '';
     document.getElementById('chantier').value = '';
     document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('btn-step1').disabled = true;
     document.getElementById('photos-preview').innerHTML = '';
+    document.getElementById('header-title').textContent = '📋 Rapport Terrain';
+    document.getElementById('header-sub').textContent = 'Envoi automatique aux assistantes';
     goToStep(1);
   }
 </script>
