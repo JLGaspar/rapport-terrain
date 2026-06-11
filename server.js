@@ -14,7 +14,7 @@ const EMAIL_EXPEDITEUR = process.env.EMAIL_EXPEDITEUR || 'chaussegaspar@gmail.co
  
 app.use(express.static('public'));
  
-app.post('/envoyer', upload.array('fichiers', 20), async (req, res) => {
+app.post('/envoyer', upload.array('photos', 20), async (req, res) => {
   try {
     const { role, nom, chantier, commentaires, typeRapport } = req.body;
     const fichiers = req.files || [];
