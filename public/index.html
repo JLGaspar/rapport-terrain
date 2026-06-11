@@ -348,6 +348,9 @@
     <label>Prénom et nom <span class="required">*</span></label>
     <input type="text" id="nom" placeholder="Ex: Jean Dupont" oninput="checkStep1()" />
     <div style="height:14px"></div>
+    <label>Nom du client <span class="required">*</span></label>
+    <input type="text" id="nomClient" placeholder="Ex: Famille Martin" oninput="checkStep1()" />
+    <div style="height:14px"></div>
     <label>Adresse du chantier <span class="required">*</span></label>
     <input type="text" id="chantier" placeholder="Ex: 12 rue des Lilas, 75020 Paris" oninput="checkStep1()" />
   </div>
@@ -414,6 +417,10 @@
     <div class="recap-row">
       <span class="recap-label">Nom</span>
       <span class="recap-value" id="recap-nom">—</span>
+    </div>
+    <div class="recap-row">
+      <span class="recap-label">Client</span>
+      <span class="recap-value" id="recap-nomClient">—</span>
     </div>
     <div class="recap-row">
       <span class="recap-label">Chantier</span>
@@ -485,8 +492,9 @@
  
   function checkStep1() {
     const nom = document.getElementById('nom').value.trim();
+    const nomClient = document.getElementById('nomClient').value.trim();
     const chantier = document.getElementById('chantier').value.trim();
-    document.getElementById('btn-step1').disabled = !(selectedTypeRapport && selectedRole && nom && chantier);
+    document.getElementById('btn-step1').disabled = !(selectedTypeRapport && selectedRole && nom && nomClient && chantier);
   }
  
   // ─── STEP 2 : AFFICHAGE SELON LE TYPE ─────────────────────────────────────
@@ -679,6 +687,7 @@
       document.getElementById('recap-type').textContent = isReception ? '🏁 Réception de chantier' : '📋 Rapport terrain';
       document.getElementById('recap-role').textContent = selectedRole;
       document.getElementById('recap-nom').textContent = document.getElementById('nom').value;
+      document.getElementById('recap-nomClient').textContent = document.getElementById('nomClient').value;
       document.getElementById('recap-chantier').textContent = document.getElementById('chantier').value;
  
       if (isReception) {
@@ -709,6 +718,7 @@
     const formData = new FormData();
     formData.append('role', selectedRole);
     formData.append('nom', document.getElementById('nom').value);
+    formData.append('nomClient', document.getElementById('nomClient').value);
     formData.append('chantier', document.getElementById('chantier').value);
     formData.append('typeRapport', selectedTypeRapport);
  
@@ -758,6 +768,7 @@
     comments = [];
     pvFile = null;
     document.getElementById('nom').value = '';
+    document.getElementById('nomClient').value = '';
     document.getElementById('chantier').value = '';
     document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
     document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
