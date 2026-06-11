@@ -557,9 +557,16 @@
   }
  
   function checkStep2() {
-    const photosOk = selectedFiles.length > 0 && selectedFiles.every((_, i) => (comments[i] || '').trim().length > 0);
-    const pvOk = selectedType !== 'reception' || pvFile !== null;
-    document.getElementById('btn-step2').disabled = !(photosOk && pvOk);
+    const commentsOk = selectedFiles.every((_, i) => (comments[i] || '').trim().length > 0);
+    if (selectedType === 'reception') {
+      // En mode réception : PV obligatoire, photos facultatives (mais si photos → commentaires obligatoires)
+      const pvOk = pvFile !== null;
+      document.getElementById('btn-step2').disabled = !(pvOk && commentsOk);
+    } else {
+      // Rapport terrain : au moins une photo + tous les commentaires remplis
+      const photosOk = selectedFiles.length > 0 && commentsOk;
+      document.getElementById('btn-step2').disabled = !photosOk;
+    }
   }
  
   function goToStep(step) {
