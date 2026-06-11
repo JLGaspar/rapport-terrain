@@ -9,15 +9,17 @@ const upload = multer({ storage: multer.memoryStorage() });
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const EMAIL_DESTINATAIRE = process.env.EMAIL_DESTINATAIRE || 'gaspar@dromlag.com';
 const EMAIL_RECEPTION = process.env.EMAIL_RECEPTION || process.env.EMAIL_DESTINATAIRE || 'gaspar@dromlag.com';
+const EMAIL_METREUR = 'metreur@ouvertures72.fr';
 const EMAIL_EXPEDITEUR = process.env.EMAIL_EXPEDITEUR || 'chaussegaspar@gmail.com';
  
 app.use(express.static('public'));
  
 app.post('/envoyer', upload.array('photos', 20), async (req, res) => {
   try {
-    const { role, nom, chantier, commentaires, typeRapport } = req.body;
+    const { role, nom, nomClient, chantier, commentaires, typeRapport } = req.body;
     const photos = req.files || [];
     const isReception = typeRapport === 'reception';
+    const isMetreur = role === 'Métreur';
     const now = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
  
     // Validation : PV obligatoire en mode réception
@@ -38,8 +40,8 @@ app.post('/envoyer', upload.array('photos', 20), async (req, res) => {
     let emailTo;
  
     if (isReception) {
-      emailTo = EMAIL_RECEPTION;
-      emailSubject = `Réception de chantier — ${chantier} — ${nom}`;
+      emailTo = isMetreur ? EMAIL_METREUR : EMAIL_RECEPTION;
+      emailSubject = `Réception de chantier — ${nomClient || chantier} — ${nom}`;
  
       // Identifier le PV parmi les fichiers (premier fichier PDF, ou à défaut le premier fichier)
       const pvFile = photos.find(f => f.mimetype === 'application/pdf') || photos[0];
@@ -50,7 +52,8 @@ RÉCEPTION DE CHANTIER
 =====================
 Date : ${now}
 Envoyé par : ${nom} (${role})
-Chantier / Client : ${chantier}
+Client : ${nomClient || '—'}
+Adresse du chantier : ${chantier}
  
 PV de réception : ${pvFile ? pvFile.originalname : '—'}
 ${photosSupp.length > 0 ? `Photos du chantier terminé : ${photosSupp.length} photo(s)` : ''}
@@ -60,8 +63,8 @@ Rapport envoyé automatiquement depuis l'application terrain.
       `.trim();
  
     } else {
-      emailTo = EMAIL_DESTINATAIRE;
-      emailSubject = `Rapport terrain — ${chantier} — ${nom}`;
+      emailTo = isMetreur ? EMAIL_METREUR : EMAIL_DESTINATAIRE;
+      emailSubject = `Rapport terrain — ${nomClient || chantier} — ${nom}`;
  
       let commentairesTexte = '';
       if (commentaires) {
@@ -76,7 +79,8 @@ RAPPORT TERRAIN
 ===============
 Date : ${now}
 Envoyé par : ${nom} (${role})
-Chantier / Client : ${chantier}
+Client : ${nomClient || '—'}
+Adresse du chantier : ${chantier}
 ${photos.length} photo(s) jointe(s)
 ${commentairesTexte ? `\nCOMMENTAIRES :\n${commentairesTexte}` : ''}
  
