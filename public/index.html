@@ -11,7 +11,7 @@
       background: #f2f2f7;
       min-height: 100vh;
     }
- 
+
     .header {
       background: #000;
       color: #fff;
@@ -20,7 +20,7 @@
     }
     .header h1 { font-size: 18px; font-weight: 700; }
     .header p { font-size: 12px; color: #aaa; margin-top: 2px; }
- 
+
     .progress-bar {
       display: flex;
       background: #fff;
@@ -37,10 +37,10 @@
     }
     .progress-step.active { color: #000; border-bottom-color: #000; font-weight: 600; }
     .progress-step.done { color: #34c759; border-bottom-color: #34c759; }
- 
+
     .screen { display: none; padding: 20px; }
     .screen.active { display: block; }
- 
+
     .card {
       background: #fff;
       border-radius: 12px;
@@ -56,7 +56,7 @@
       letter-spacing: 0.5px;
       margin-bottom: 12px;
     }
- 
+
     label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
     .required { color: #ff3b30; }
     input[type="text"] {
@@ -69,7 +69,7 @@
       transition: border-color 0.2s;
     }
     input[type="text"]:focus { border-color: #000; }
- 
+
     .roles-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -88,7 +88,33 @@
     }
     .role-btn .emoji { font-size: 24px; display: block; margin-bottom: 4px; }
     .role-btn.selected { border-color: #000; background: #000; color: #fff; }
- 
+
+    /* Bannière mémorisation */
+    .memory-banner {
+      background: #f0f7ff;
+      border: 1px solid #c7dff8;
+      color: #1a4a7c;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .memory-banner span { flex: 1; }
+    .memory-banner button {
+      background: none;
+      border: 1px solid #1a4a7c;
+      color: #1a4a7c;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
     /* Sélecteur type de rapport */
     .type-rapport-grid {
       display: grid;
@@ -109,7 +135,7 @@
     }
     .type-btn .emoji { font-size: 28px; display: block; margin-bottom: 6px; }
     .type-btn.selected { border-color: #000; background: #000; color: #fff; }
- 
+
     .photo-area {
       border: 2px dashed #ddd;
       border-radius: 12px;
@@ -131,7 +157,7 @@
     .photo-area .icon { font-size: 36px; margin-bottom: 8px; }
     .photo-area p { font-size: 14px; color: #666; }
     .photo-area small { color: #aaa; font-size: 12px; }
- 
+
     .photos-preview {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -166,7 +192,7 @@
       align-items: center;
       justify-content: center;
     }
- 
+
     /* Badge PV */
     .pv-badge {
       display: inline-block;
@@ -180,7 +206,7 @@
       vertical-align: middle;
       letter-spacing: 0.5px;
     }
- 
+
     /* Vignette PV (PDF) */
     .pv-file-preview {
       margin-top: 12px;
@@ -196,31 +222,58 @@
     .pv-file-preview .pv-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .pv-file-preview .pv-size { font-size: 11px; color: #999; }
     .pv-file-preview .pv-remove { background: none; border: none; font-size: 18px; cursor: pointer; color: #999; padding: 4px; }
- 
+
+    /* Champs repère + commentaire par photo */
     .comment-field {
       margin-top: 8px;
+      border: 1px solid #f0f0f0;
+      border-radius: 10px;
+      padding: 10px;
+      background: #fafafa;
     }
-    .comment-field textarea {
+    .comment-photo-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 8px;
+    }
+    .field-row {
+      margin-bottom: 8px;
+    }
+    .field-row:last-child { margin-bottom: 0; }
+    .field-row label {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 3px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .field-row input[type="text"] {
+      padding: 8px 10px;
+      font-size: 13px;
+      border-radius: 7px;
+    }
+    .field-row textarea {
       width: 100%;
-      padding: 10px 12px;
+      padding: 8px 10px;
       border: 1.5px solid #e5e5e5;
-      border-radius: 8px;
+      border-radius: 7px;
       font-size: 13px;
       font-family: inherit;
       resize: none;
       outline: none;
-      min-height: 60px;
+      min-height: 56px;
     }
-    .comment-field textarea:focus { border-color: #000; }
-    .comment-label { font-size: 12px; color: #666; margin-bottom: 4px; }
- 
+    .field-row textarea:focus { border-color: #000; }
+
     .photo-count {
       font-size: 13px;
       color: #666;
       margin-top: 8px;
       text-align: center;
     }
- 
+
     .recap-row {
       display: flex;
       justify-content: space-between;
@@ -232,7 +285,7 @@
     .recap-row:last-child { border-bottom: none; }
     .recap-label { color: #666; flex-shrink: 0; margin-right: 12px; }
     .recap-value { font-weight: 500; text-align: right; }
- 
+
     .btn {
       width: 100%;
       padding: 16px;
@@ -253,7 +306,7 @@
       margin-top: 10px;
     }
     .btn-secondary:hover { border-color: #000; }
- 
+
     .success-screen {
       text-align: center;
       padding: 40px 20px;
@@ -261,7 +314,7 @@
     .success-icon { font-size: 64px; margin-bottom: 16px; }
     .success-screen h2 { font-size: 22px; margin-bottom: 8px; }
     .success-screen p { color: #666; font-size: 15px; margin-bottom: 24px; }
- 
+
     .spinner {
       display: inline-block;
       width: 20px;
@@ -274,7 +327,7 @@
       vertical-align: middle;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
- 
+
     .error-msg {
       background: #fff0f0;
       border: 1px solid #ffcdd2;
@@ -285,7 +338,7 @@
       margin-top: 12px;
       display: none;
     }
- 
+
     .info-banner {
       background: #f0f4ff;
       border: 1px solid #c7d7f8;
@@ -298,21 +351,27 @@
   </style>
 </head>
 <body>
- 
+
 <div class="header">
   <h1 id="header-title">📋 Rapport Terrain</h1>
   <p id="header-sub">Envoi automatique aux assistantes</p>
 </div>
- 
+
 <div class="progress-bar">
   <div class="progress-step active" id="step-label-1">Identité</div>
   <div class="progress-step" id="step-label-2">Fichiers</div>
   <div class="progress-step" id="step-label-3">Récap</div>
 </div>
- 
+
 <!-- ÉCRAN 1 : Identité -->
 <div class="screen active" id="screen-1">
- 
+
+  <!-- Bannière mémorisation (masquée par défaut, affichée si données sauvegardées) -->
+  <div class="memory-banner" id="memory-banner" style="display:none">
+    <span id="memory-text"></span>
+    <button onclick="clearMemory()">Changer</button>
+  </div>
+
   <div class="card">
     <div class="card-title">Type de rapport <span class="required">*</span></div>
     <div class="type-rapport-grid">
@@ -324,8 +383,8 @@
       </button>
     </div>
   </div>
- 
-  <div class="card">
+
+  <div class="card" id="card-role">
     <div class="card-title">Votre rôle</div>
     <div class="roles-grid">
       <button class="role-btn" onclick="selectRole('Commercial')" id="role-Commercial">
@@ -342,7 +401,7 @@
       </button>
     </div>
   </div>
- 
+
   <div class="card">
     <div class="card-title">Vos informations</div>
     <label>Prénom et nom <span class="required">*</span></label>
@@ -354,15 +413,15 @@
     <label>Adresse du chantier <span class="required">*</span></label>
     <input type="text" id="chantier" placeholder="Ex: 12 rue des Lilas, 75020 Paris" oninput="checkStep1()" />
   </div>
- 
+
   <button class="btn btn-primary" id="btn-step1" onclick="goToStep(2)" disabled>
     Continuer →
   </button>
 </div>
- 
+
 <!-- ÉCRAN 2 : Photos / PV -->
 <div class="screen" id="screen-2">
- 
+
   <!-- BLOC PV — visible uniquement en mode réception -->
   <div class="card" id="card-pv" style="display:none">
     <div class="card-title">PV de réception <span class="required">*</span> <span style="font-size:11px;color:#999;text-transform:none;font-weight:400;">(PDF ou photo)</span></div>
@@ -376,8 +435,8 @@
     <div id="pv-preview" style="display:none"></div>
     <div class="info-banner" id="pv-info">Le PV sera envoyé en pièce jointe avec le rapport de réception.</div>
   </div>
- 
-  <!-- BLOC PHOTOS TERRAIN — visible en mode terrain + photos supplémentaires en mode réception -->
+
+  <!-- BLOC PHOTOS TERRAIN -->
   <div class="card" id="card-photos">
     <div class="card-title" id="photos-card-title">Ajouter des photos <span class="required">*</span></div>
     <input type="file" id="file-camera" accept="image/*" capture="environment" multiple onchange="handleFiles(this.files)" style="display:none" />
@@ -386,22 +445,22 @@
       <button class="btn btn-secondary" style="margin-top:0;padding:14px 8px;font-size:14px" onclick="document.getElementById('file-camera').click()">📷 Appareil photo</button>
       <button class="btn btn-secondary" style="margin-top:0;padding:14px 8px;font-size:14px" onclick="document.getElementById('file-gallery').click()">🖼️ Photothèque</button>
     </div>
- 
+
     <div class="photos-preview" id="photos-preview"></div>
     <div class="photo-count" id="photo-count" style="display:none"></div>
   </div>
- 
+
   <div class="card" id="comments-card" style="display:none">
-    <div class="card-title">Commentaires <span class="required">*</span></div>
+    <div class="card-title">Repères & Commentaires <span class="required">*</span></div>
     <div id="comments-container"></div>
   </div>
- 
+
   <button class="btn btn-primary" id="btn-step2" onclick="goToStep(3)" disabled>
     Voir le récapitulatif →
   </button>
   <button class="btn btn-secondary" onclick="goToStep(1)">← Retour</button>
 </div>
- 
+
 <!-- ÉCRAN 3 : Récapitulatif -->
 <div class="screen" id="screen-3">
   <div class="card">
@@ -435,14 +494,14 @@
       <span class="recap-value" id="recap-photos">—</span>
     </div>
   </div>
- 
+
   <button class="btn btn-primary" id="btn-envoyer" onclick="envoyer()">
     ✉️ Envoyer le rapport
   </button>
   <div class="error-msg" id="error-msg"></div>
   <button class="btn btn-secondary" onclick="goToStep(2)">← Retour</button>
 </div>
- 
+
 <!-- ÉCRAN 4 : Succès -->
 <div class="screen" id="screen-4">
   <div class="success-screen">
@@ -452,22 +511,65 @@
     <button class="btn btn-primary" onclick="recommencer()">Nouveau rapport</button>
   </div>
 </div>
- 
+
 <script>
   let selectedRole = '';
-  let selectedTypeRapport = ''; // 'terrain' ou 'reception'
+  let selectedTypeRapport = '';
   let selectedFiles = [];
   let comments = [];
-  let pvFile = null; // fichier PV unique pour la réception
- 
+  let reperes = [];
+  let pvFile = null;
+
+  // ─── LOCALSTORE : mémorisation prénom + rôle ──────────────────────────────
+
+  function loadMemory() {
+    const savedNom = localStorage.getItem('ou72_nom');
+    const savedRole = localStorage.getItem('ou72_role');
+
+    if (savedNom && savedRole) {
+      // Pré-remplir les champs
+      document.getElementById('nom').value = savedNom;
+      selectRole(savedRole);
+
+      // Afficher la bannière
+      document.getElementById('memory-text').textContent = `👋 Bonjour ${savedNom} (${savedRole})`;
+      document.getElementById('memory-banner').style.display = 'flex';
+
+      // Masquer la carte rôle (déjà mémorisé)
+      document.getElementById('card-role').style.display = 'none';
+
+      checkStep1();
+    }
+  }
+
+  function saveMemory() {
+    const nom = document.getElementById('nom').value.trim();
+    if (nom && selectedRole) {
+      localStorage.setItem('ou72_nom', nom);
+      localStorage.setItem('ou72_role', selectedRole);
+    }
+  }
+
+  function clearMemory() {
+    localStorage.removeItem('ou72_nom');
+    localStorage.removeItem('ou72_role');
+
+    // Réinitialiser
+    document.getElementById('nom').value = '';
+    selectedRole = '';
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('memory-banner').style.display = 'none';
+    document.getElementById('card-role').style.display = 'block';
+    checkStep1();
+  }
+
   // ─── SÉLECTION TYPE DE RAPPORT ────────────────────────────────────────────
- 
+
   function selectTypeRapport(type) {
     selectedTypeRapport = type;
     document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('type-' + type).classList.add('selected');
- 
-    // Adapter l'interface selon le type
+
     if (type === 'reception') {
       document.getElementById('header-title').textContent = '🏁 Réception de chantier';
       document.getElementById('header-sub').textContent = 'Envoi automatique au responsable';
@@ -475,66 +577,65 @@
       document.getElementById('header-title').textContent = '📋 Rapport Terrain';
       document.getElementById('header-sub').textContent = 'Envoi automatique aux assistantes';
     }
- 
+
     checkStep1();
   }
- 
+
   // ─── SÉLECTION RÔLE ───────────────────────────────────────────────────────
- 
+
   function selectRole(role) {
     selectedRole = role;
     document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
-    document.getElementById('role-' + role).classList.add('selected');
+    const btn = document.getElementById('role-' + role);
+    if (btn) btn.classList.add('selected');
     checkStep1();
   }
- 
+
   // ─── VALIDATION STEP 1 ────────────────────────────────────────────────────
- 
+
   function checkStep1() {
     const nom = document.getElementById('nom').value.trim();
     const nomClient = document.getElementById('nomClient').value.trim();
     const chantier = document.getElementById('chantier').value.trim();
     document.getElementById('btn-step1').disabled = !(selectedTypeRapport && selectedRole && nom && nomClient && chantier);
   }
- 
+
   // ─── STEP 2 : AFFICHAGE SELON LE TYPE ─────────────────────────────────────
- 
+
   function setupStep2() {
     const isReception = selectedTypeRapport === 'reception';
- 
-    // Bloc PV : visible uniquement en mode réception
+
     document.getElementById('card-pv').style.display = isReception ? 'block' : 'none';
- 
-    // Titre et caractère obligatoire du bloc photos
+
     const photosTitle = document.getElementById('photos-card-title');
     if (isReception) {
       photosTitle.innerHTML = 'Photos du chantier terminé <span style="font-size:11px;color:#999;font-weight:400;">(facultatif)</span>';
     } else {
       photosTitle.innerHTML = 'Ajouter des photos <span class="required">*</span>';
     }
- 
+
     checkStep2();
   }
- 
+
   // ─── GESTION PV ───────────────────────────────────────────────────────────
- 
+
   function handlePV(files) {
     if (!files || files.length === 0) return;
     pvFile = files[0];
     renderPV();
     checkStep2();
   }
- 
+
   function renderPV() {
     const preview = document.getElementById('pv-preview');
     const buttons = document.getElementById('pv-buttons');
     const info = document.getElementById('pv-info');
- 
+
     if (pvFile) {
       const isPDF = pvFile.type === 'application/pdf';
       const icon = isPDF ? '📄' : '🖼️';
       const sizeKB = Math.round(pvFile.size / 1024);
- 
+
       if (isPDF) {
         preview.innerHTML = `
           <div class="pv-file-preview">
@@ -547,7 +648,6 @@
           </div>
         `;
       } else {
-        // Image : afficher en miniature
         const url = URL.createObjectURL(pvFile);
         preview.innerHTML = `
           <div style="margin-top:12px;position:relative;display:inline-block;width:100%">
@@ -557,7 +657,7 @@
           </div>
         `;
       }
- 
+
       preview.style.display = 'block';
       buttons.style.display = 'none';
       info.style.display = 'none';
@@ -567,42 +667,45 @@
       info.style.display = 'block';
     }
   }
- 
+
   function removePV() {
     pvFile = null;
     renderPV();
     checkStep2();
   }
- 
+
   // ─── GESTION PHOTOS ───────────────────────────────────────────────────────
- 
-  function saveComments() {
+
+  function saveFieldValues() {
     selectedFiles.forEach((_, i) => {
-      const ta = document.getElementById('comment-' + i);
-      if (ta) comments[i] = ta.value;
+      const repInput = document.getElementById('repere-' + i);
+      const comInput = document.getElementById('comment-' + i);
+      if (repInput) reperes[i] = repInput.value;
+      if (comInput) comments[i] = comInput.value;
     });
   }
- 
+
   function handleFiles(files) {
-    saveComments();
+    saveFieldValues();
     for (const file of files) {
       if (!selectedFiles.find(f => f.name === file.name && f.size === file.size)) {
         selectedFiles.push(file);
         comments.push('');
+        reperes.push('');
       }
     }
     renderPhotos();
   }
- 
+
   function renderPhotos() {
     const preview = document.getElementById('photos-preview');
     const commentsCard = document.getElementById('comments-card');
     const commentsContainer = document.getElementById('comments-container');
     const count = document.getElementById('photo-count');
- 
+
     preview.innerHTML = '';
     commentsContainer.innerHTML = '';
- 
+
     selectedFiles.forEach((file, i) => {
       const url = URL.createObjectURL(file);
       const thumb = document.createElement('div');
@@ -612,76 +715,88 @@
         <button class="remove-photo" onclick="removePhoto(${i})">×</button>
       `;
       preview.appendChild(thumb);
- 
-      // Commentaires obligatoires uniquement en mode terrain
+
+      // Champs repère + commentaire en mode terrain
       if (selectedTypeRapport !== 'reception') {
         const commentDiv = document.createElement('div');
         commentDiv.className = 'comment-field';
         commentDiv.innerHTML = `
-          <div class="comment-label">Photo ${i + 1} — ${file.name} <span style="color:#ff3b30">*</span></div>
-          <textarea id="comment-${i}" placeholder="Commentaire obligatoire" oninput="onCommentInput(${i}, this.value)">${comments[i] || ''}</textarea>
+          <div class="comment-photo-label">📷 Photo ${i + 1} — ${file.name}</div>
+          <div class="field-row">
+            <label>Repère <span style="color:#ff3b30">*</span></label>
+            <input type="text" id="repere-${i}" placeholder="Ex: Fenêtre salon, Porte garage…" value="${reperes[i] || ''}" oninput="onFieldInput(${i})" />
+          </div>
+          <div class="field-row">
+            <label>Commentaire <span style="color:#ff3b30">*</span></label>
+            <textarea id="comment-${i}" placeholder="Décrivez ce que montre la photo…" oninput="onFieldInput(${i})">${comments[i] || ''}</textarea>
+          </div>
         `;
         commentsContainer.appendChild(commentDiv);
       }
     });
- 
+
     if (selectedFiles.length > 0) {
       count.style.display = 'block';
       count.textContent = `${selectedFiles.length} photo(s) sélectionnée(s)`;
-      // Afficher les commentaires uniquement en mode terrain
       commentsCard.style.display = selectedTypeRapport !== 'reception' ? 'block' : 'none';
     } else {
       count.style.display = 'none';
       commentsCard.style.display = 'none';
     }
- 
+
     checkStep2();
   }
- 
-  function onCommentInput(index, value) {
-    comments[index] = value;
+
+  function onFieldInput(index) {
+    const repInput = document.getElementById('repere-' + index);
+    const comInput = document.getElementById('comment-' + index);
+    if (repInput) reperes[index] = repInput.value;
+    if (comInput) comments[index] = comInput.value;
     checkStep2();
   }
- 
+
   function checkStep2() {
     const isReception = selectedTypeRapport === 'reception';
- 
+
     if (isReception) {
-      // En réception : PV obligatoire, photos facultatives
       document.getElementById('btn-step2').disabled = !pvFile;
     } else {
-      // En terrain : au moins une photo + tous les commentaires remplis
       if (selectedFiles.length === 0) {
         document.getElementById('btn-step2').disabled = true;
         return;
       }
-      const allFilled = selectedFiles.every((_, i) => (comments[i] || '').trim().length > 0);
+      // Les deux champs (repère ET commentaire) doivent être remplis pour chaque photo
+      const allFilled = selectedFiles.every((_, i) =>
+        (reperes[i] || '').trim().length > 0 &&
+        (comments[i] || '').trim().length > 0
+      );
       document.getElementById('btn-step2').disabled = !allFilled;
     }
   }
- 
+
   function removePhoto(index) {
-    saveComments();
+    saveFieldValues();
     selectedFiles.splice(index, 1);
     comments.splice(index, 1);
+    reperes.splice(index, 1);
     renderPhotos();
   }
- 
+
   // ─── NAVIGATION ───────────────────────────────────────────────────────────
- 
+
   function goToStep(step) {
     if (step === 2) setupStep2();
-    if (step === 3) saveComments();
- 
+    if (step === 3) saveFieldValues();
+
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + step).classList.add('active');
- 
+
     document.querySelectorAll('.progress-step').forEach((el, i) => {
       el.classList.remove('active', 'done');
       if (i + 1 < step) el.classList.add('done');
       if (i + 1 === step) el.classList.add('active');
     });
- 
+
     if (step === 3) {
       const isReception = selectedTypeRapport === 'reception';
       document.getElementById('recap-type').textContent = isReception ? '🏁 Réception de chantier' : '📋 Rapport terrain';
@@ -689,7 +804,7 @@
       document.getElementById('recap-nom').textContent = document.getElementById('nom').value;
       document.getElementById('recap-nomClient').textContent = document.getElementById('nomClient').value;
       document.getElementById('recap-chantier').textContent = document.getElementById('chantier').value;
- 
+
       if (isReception) {
         document.getElementById('recap-row-pv').style.display = 'flex';
         document.getElementById('recap-pv').textContent = pvFile ? pvFile.name : '—';
@@ -701,45 +816,46 @@
         document.getElementById('recap-photos').textContent = selectedFiles.length + ' photo(s)';
       }
     }
- 
+
     window.scrollTo(0, 0);
   }
- 
+
   // ─── ENVOI ────────────────────────────────────────────────────────────────
- 
+
   async function envoyer() {
     const btn = document.getElementById('btn-envoyer');
     const errorMsg = document.getElementById('error-msg');
     errorMsg.style.display = 'none';
- 
+
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span>Envoi en cours…';
- 
+
+    // Sauvegarder prénom + rôle avant d'envoyer
+    saveMemory();
+
     const formData = new FormData();
     formData.append('role', selectedRole);
     formData.append('nom', document.getElementById('nom').value);
     formData.append('nomClient', document.getElementById('nomClient').value);
     formData.append('chantier', document.getElementById('chantier').value);
     formData.append('typeRapport', selectedTypeRapport);
- 
-    // En mode réception : PV en premier (pour que le serveur l'identifie facilement), puis photos
+
     if (selectedTypeRapport === 'reception' && pvFile) {
       formData.append('photos', pvFile, pvFile.name);
     }
- 
-    // Photos (terrain : avec commentaires ; réception : sans commentaires)
+
     selectedFiles.forEach((file, i) => {
       formData.append('photos', file, file.name);
       if (selectedTypeRapport !== 'reception') {
+        formData.append('reperes', reperes[i] || '');
         formData.append('commentaires', comments[i] || '');
       }
     });
- 
+
     try {
       const res = await fetch('/envoyer', { method: 'POST', body: formData });
       const data = await res.json();
       if (data.success) {
-        // Adapter le message de succès
         if (selectedTypeRapport === 'reception') {
           document.getElementById('success-title').textContent = 'Réception envoyée !';
           document.getElementById('success-msg').textContent = 'Le PV et les photos ont été transmis au responsable.';
@@ -758,26 +874,30 @@
       btn.innerHTML = '✉️ Envoyer le rapport';
     }
   }
- 
+
   // ─── RECOMMENCER ──────────────────────────────────────────────────────────
- 
+
   function recommencer() {
-    selectedRole = '';
     selectedTypeRapport = '';
     selectedFiles = [];
     comments = [];
+    reperes = [];
     pvFile = null;
-    document.getElementById('nom').value = '';
     document.getElementById('nomClient').value = '';
     document.getElementById('chantier').value = '';
-    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
     document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('btn-step1').disabled = true;
     document.getElementById('photos-preview').innerHTML = '';
     document.getElementById('header-title').textContent = '📋 Rapport Terrain';
     document.getElementById('header-sub').textContent = 'Envoi automatique aux assistantes';
+
+    // Garder nom + rôle mémorisés, juste revenir à l'écran 1
+    // (le champ nom est déjà rempli, la bannière déjà affichée)
     goToStep(1);
   }
+
+  // ─── INIT ─────────────────────────────────────────────────────────────────
+  loadMemory();
 </script>
 </body>
 </html>
