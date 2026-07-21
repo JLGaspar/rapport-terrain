@@ -5,12 +5,16 @@ const path = require('path');
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Config
+// ─── Config ─────────────────────────────────────────────────────────────
+// Seule la clé API Brevo reste en variable d'environnement (secret, à définir
+// dans Clever Cloud : Application > Environment variables > BREVO_API_KEY).
+// Les adresses email sont en dur ici : pour en changer une, modifie la
+// constante ci-dessous et repush (pas besoin de toucher Clever Cloud).
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
-const EMAIL_DESTINATAIRE = process.env.EMAIL_DESTINATAIRE || 'gaspar@dromlag.com';
-const EMAIL_RECEPTION = process.env.EMAIL_RECEPTION || process.env.EMAIL_DESTINATAIRE || 'gaspar@dromlag.com';
+const EMAIL_DESTINATAIRE = 'gaspar@dromlag.com';
+const EMAIL_RECEPTION = 'gaspar@dromlag.com';
 const EMAIL_METREUR = 'metreur@ouvertures72.fr';
-const EMAIL_EXPEDITEUR = process.env.EMAIL_EXPEDITEUR || 'chaussegaspar@gmail.com';
+const EMAIL_EXPEDITEUR = 'chaussegaspar@gmail.com';
 
 app.use(express.static('public'));
 
@@ -42,10 +46,8 @@ app.post('/envoyer', upload.array('photos', 20), async (req, res) => {
     if (isReception) {
       emailTo = isMetreur ? EMAIL_METREUR : EMAIL_RECEPTION;
       emailSubject = `Réception de chantier — ${nomClient || chantier} — ${nom}`;
-
       const pvFile = photos.find(f => f.mimetype === 'application/pdf') || photos[0];
       const photosSupp = photos.filter(f => f !== pvFile);
-
       emailBody = `
 RÉCEPTION DE CHANTIER
 =====================
@@ -53,14 +55,11 @@ Date : ${now}
 Envoyé par : ${nom} (${role})
 Client : ${nomClient || '—'}
 Adresse du chantier : ${chantier}
-
 PV de réception : ${pvFile ? pvFile.originalname : '—'}
 ${photosSupp.length > 0 ? `Photos du chantier terminé : ${photosSupp.length} photo(s)` : ''}
-
 ---
 Rapport envoyé automatiquement depuis l'application terrain.
       `.trim();
-
     } else {
       emailTo = isMetreur ? EMAIL_METREUR : EMAIL_DESTINATAIRE;
       emailSubject = `Rapport terrain — ${nomClient || chantier} — ${nom}`;
@@ -91,7 +90,6 @@ Envoyé par : ${nom} (${role})
 Client : ${nomClient || '—'}
 Adresse du chantier : ${chantier}
 ${photos.length} photo(s) jointe(s)
-
 ${detailsPhotos ? `DÉTAIL DES PHOTOS :\n${detailsPhotos}` : ''}
 ---
 Rapport envoyé automatiquement depuis l'application terrain.
@@ -113,7 +111,6 @@ Rapport envoyé automatiquement depuis l'application terrain.
     });
 
     res.json({ success: true });
-
   } catch (err) {
     console.error(err.response?.data || err.message);
     res.status(500).json({ success: false, error: err.message });
