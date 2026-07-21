@@ -11,7 +11,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Les adresses email sont en dur ici : pour en changer une, modifie la
 // constante ci-dessous et repush (pas besoin de toucher Clever Cloud).
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
-const EMAIL_DESTINATAIRE = 'chaussegaspar@gmail.com';
+const EMAIL_DESTINATAIRE = 'contact@ouvertures72.fr';
 const EMAIL_RECEPTION = 'contact@ouvertures72.fr';
 const EMAIL_METREUR = 'metreur@ouvertures72.fr';
 const EMAIL_EXPEDITEUR = 'chaussegaspar@gmail.com';
